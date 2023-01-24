@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Security.Claims;
@@ -11,25 +10,19 @@ namespace WeatherApi.Controllers
     [ApiController]
     public class WeatherController : ControllerBase
     {
-
         private static readonly string[] Summaries = new[]
-      {
+   {
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
     };
 
         [HttpGet("GetWeatherForecast")]
-        [Authorize]
-
-        public IEnumerable<WeatherForecast> Get()
+        public IActionResult Get()
         {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+            var user = GetLoggedUserIdAndRole();
+
+            return Ok(Summaries);
         }
+        //#############################################################################
 
         [HttpGet("getOne")]
         [Authorize(Roles = "Admin,Manager")]
@@ -40,7 +33,8 @@ namespace WeatherApi.Controllers
             return Ok("Cool");
         }
 
-      
+        //#############################################################################
+
 
         [HttpGet("getTwo")]
         [Authorize(Roles = "Admin,Ceo")]
@@ -51,6 +45,7 @@ namespace WeatherApi.Controllers
          
             return Ok("Mild");
         }
+        //#############################################################################
 
         [HttpGet("getThree")]
         [Authorize(Roles = "Admin")]
@@ -86,5 +81,7 @@ namespace WeatherApi.Controllers
             }
             return null;
         }
+        //#############################################################################
+
     }
 }
