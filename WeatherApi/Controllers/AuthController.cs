@@ -59,7 +59,7 @@ namespace WeatherApi.Controllers
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
             var claims = new[]
             {
-               new Claim(ClaimTypes.NameIdentifier, customer.Firstname),
+               new Claim(ClaimTypes.NameIdentifier, customer.Id.ToString()),
                new Claim(ClaimTypes.Email, customer.Email),
                new Claim(ClaimTypes.Name, customer.Lastname),
                new Claim(ClaimTypes.Role, customer.SingleRole),
